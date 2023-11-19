@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
@@ -18,6 +19,8 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 )
+
+const HttpHeaderTimeout = 5 * time.Second
 
 type apiConfig struct {
 	DB *database.Queries
@@ -93,8 +96,9 @@ func main() {
 
 	router.Mount("/v1", v1Router)
 	srv := &http.Server{
-		Addr:    ":" + port,
-		Handler: router,
+		Addr:              ":" + port,
+		Handler:           router,
+		ReadHeaderTimeout: HttpHeaderTimeout,
 	}
 
 	log.Printf("Serving on port: %s\n", port)
