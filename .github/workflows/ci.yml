@@ -26,12 +26,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check formatting
-        run: test -z $(go fmt ./...)
-
       - name: Install staticchek
         run: go install honnef.co/go/tools/cmd/staticcheck@latest
 
+      - name: Check formatting
+        run: test -z $(go fmt ./...)
+
       - name: Linting
-        uses: staticcheck
         run: staticcheck ./...
